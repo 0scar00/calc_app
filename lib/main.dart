@@ -40,6 +40,8 @@ class _CalculatorHomePageState extends State<CalculatorHomePage> {
         _result = '';
       } else if (value == '=') {
         _evaluateExpression();
+      } else if (value == '^2') {
+        _expression += '^2'; // For squaring numbers
       } else {
         _expression += value;
       }
@@ -49,7 +51,9 @@ class _CalculatorHomePageState extends State<CalculatorHomePage> {
   // Method to evaluate the expression using the expressions package
   void _evaluateExpression() {
     try {
-      final expression = Expression.parse(_expression);
+      // Replacing the ^2 (square operation) with **2 for the expression evaluator
+      String modifiedExpression = _expression.replaceAll('^2', '**2');
+      final expression = Expression.parse(modifiedExpression);
       final evaluator = const ExpressionEvaluator();
       final result = evaluator.eval(expression, {});
       setState(() {
@@ -108,8 +112,10 @@ class _CalculatorHomePageState extends State<CalculatorHomePage> {
                 _buildButton('4'), _buildButton('5'), _buildButton('6'), _buildButton('*'),
                 // Third row of buttons
                 _buildButton('1'), _buildButton('2'), _buildButton('3'), _buildButton('-'),
-                // Fourth row of buttons
+                // Fourth row of buttons (Added square and modulo buttons)
                 _buildButton('C'), _buildButton('0'), _buildButton('='), _buildButton('+'),
+                // Fifth row for new operations
+                _buildButton('%'), _buildButton('^2'),
               ],
             ),
           ],
